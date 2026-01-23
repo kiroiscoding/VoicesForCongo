@@ -93,11 +93,11 @@ export const Footer = () => {
             <h4 className="text-white font-bold mb-6">Get in Touch</h4>
             <ul className="space-y-4 text-sm">
               <li>
-                <a href="mailto:abigail.r.mckoy@student158.org" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors group">
+                <a href="mailto:abigail.rozsa@gmail.com" className="flex items-center gap-3 text-white/60 hover:text-white transition-colors group">
                   <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
                     <Mail size={14} />
                   </div>
-                  <span>abigail.r.mckoy@student158.org</span>
+                  <span>abigail.rozsa@gmail.com</span>
                 </a>
               </li>
               <li className="text-white/40 text-xs mt-4">

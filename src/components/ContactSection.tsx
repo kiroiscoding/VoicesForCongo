@@ -76,13 +76,13 @@ export const ContactSection = () => {
               </p>
 
               <div className="space-y-8">
-                <a href="mailto:abigail.r.mckoy@student158.org" className="group flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-[1.02]">
+                <a href="mailto:abigail.rozsa@gmail.com" className="group flex items-center gap-6 p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all hover:scale-[1.02]">
                   <div className="w-16 h-16 rounded-full bg-vibrant-teal/20 flex items-center justify-center text-vibrant-teal group-hover:scale-110 transition-transform">
                     <Mail size={32} />
                   </div>
                   <div>
                     <span className="block text-sm text-white/50 uppercase tracking-widest mb-1">Email Me</span>
-                    <span className="text-base sm:text-lg md:text-2xl font-bold text-white group-hover:text-vibrant-teal transition-colors break-all">abigail.r.mckoy@student158.org</span>
+                    <span className="text-base sm:text-lg md:text-2xl font-bold text-white group-hover:text-vibrant-teal transition-colors break-all">abigail.rozsa@gmail.com</span>
                   </div>
                 </a>
 
