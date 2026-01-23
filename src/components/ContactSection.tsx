@@ -82,7 +82,7 @@ export const ContactSection = () => {
                   </div>
                   <div>
                     <span className="block text-sm text-white/50 uppercase tracking-widest mb-1">Email Me</span>
-                    <span className="text-2xl font-bold text-white group-hover:text-vibrant-teal transition-colors">abigail.r.mckoy@student158.org</span>
+                    <span className="text-base sm:text-lg md:text-2xl font-bold text-white group-hover:text-vibrant-teal transition-colors break-all">abigail.r.mckoy@student158.org</span>
                   </div>
                 </a>
 
