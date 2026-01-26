@@ -2,16 +2,12 @@
 
 import { motion } from "framer-motion";
 import { User, MapPin, Mail, GraduationCap, Send } from "lucide-react";
+import { DeveloperSection } from "./DeveloperSection";
+import Image from "next/image";
 
 export const ContactSection = () => {
   return (
-    <section className="min-h-screen py-24 bg-rich-black text-white relative overflow-hidden flex items-center">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-96 h-96 bg-congo-blue/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-congo-red/10 rounded-full blur-3xl" />
-      </div>
-
+    <section className="min-h-screen bg-rich-black text-white relative overflow-hidden flex flex-col items-center">
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -27,15 +23,12 @@ export const ContactSection = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-congo-blue/20 to-congo-red/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
 
               <div className="aspect-[3/4] w-full rounded-2xl bg-neutral-800 mb-8 relative overflow-hidden shadow-2xl">
-                {/* Image Placeholder */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white/20 group-hover:text-white/40 transition-colors">
-                  <User size={64} strokeWidth={1} />
-                  <span className="mt-4 text-sm font-medium uppercase tracking-widest">Add Photo</span>
-                </div>
-                {/* 
-                  UNCOMMENT TO ADD IMAGE:
-                  <Image src="/abigail.jpg" alt="Abigail McKoy" fill className="object-cover" /> 
-                */}
+                <Image 
+                  src="/images/abbi_PIC.JPG" 
+                  alt="Abigail McKoy" 
+                  fill 
+                  className="object-cover" 
+                />
               </div>
 
               <h2 className="text-4xl font-bold mb-2">Abigail McKoy</h2>
@@ -100,6 +93,7 @@ export const ContactSection = () => {
           </div>
         </motion.div>
       </div>
+      <DeveloperSection />
     </section>
   );
 };
