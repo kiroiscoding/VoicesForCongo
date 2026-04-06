@@ -9,11 +9,11 @@ import { motion } from "framer-motion";
 export default function Home() {
   return (
     <main className="min-h-screen bg-rich-black selection:bg-congo-yellow selection:text-black overflow-hidden relative">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-        transition={{ duration: 0.5 }}
-        className="flex-grow flex flex-col min-h-screen"
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+        className="flex-grow flex flex-col"
       >
         <Hero />
         <Mission />

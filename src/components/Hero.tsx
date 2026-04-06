@@ -16,18 +16,10 @@ const heroImages = [
 
 export const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [particles, setParticles] = useState<{ width: number; height: number; top: string; left: string; duration: number; delay: number }[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const newParticles = [...Array(20)].map(() => ({
-      width: Math.random() * 4 + 1,
-      height: Math.random() * 4 + 1,
-      top: `${Math.random() * 100}%`,
-      left: `${Math.random() * 100}%`,
-      duration: Math.random() * 5 + 5,
-      delay: Math.random() * 5,
-    }));
-    setParticles(newParticles);
+    setIsMobile(window.innerWidth < 768);
   }, []);
 
   useEffect(() => {
@@ -38,8 +30,9 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-rich-black text-white px-4 pt-20">
-      {/* Crossfading photo slideshow with Ken Burns zoom */}
+    <section className="relative min-h-screen min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-rich-black text-white px-4 pt-20">
+
+      {/* Crossfading photo slideshow — Ken Burns only on desktop */}
       <AnimatePresence>
         <motion.div
           key={currentIndex}
@@ -47,14 +40,10 @@ export const Hero = () => {
           animate={{ opacity: 0.38 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.8, ease: "easeInOut" }}
-          className="absolute inset-0"
+          className="absolute inset-0 will-change-[opacity]"
         >
-          <motion.div
-            className="absolute inset-0"
-            initial={{ scale: 1.08 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 7, ease: "easeOut" }}
-          >
+          {isMobile ? (
+            // On mobile: no Ken Burns zoom, just a plain crossfade
             <Image
               src={heroImages[currentIndex]}
               alt="Democratic Republic of Congo"
@@ -62,98 +51,98 @@ export const Hero = () => {
               className="object-cover object-center"
               priority={currentIndex === 0}
             />
-          </motion.div>
+          ) : (
+            // On desktop: Ken Burns zoom
+            <motion.div
+              className="absolute inset-0 will-change-transform"
+              initial={{ scale: 1.06 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 7, ease: "easeOut" }}
+            >
+              <Image
+                src={heroImages[currentIndex]}
+                alt="Democratic Republic of Congo"
+                fill
+                className="object-cover object-center"
+                priority={currentIndex === 0}
+              />
+            </motion.div>
+          )}
         </motion.div>
       </AnimatePresence>
 
-      {/* Dark gradient overlay so text pops */}
+      {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/85 pointer-events-none z-[1]" />
 
-
-      {/* Abstract Background Shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2]">
+      {/* Animated blobs — desktop only (too heavy for mobile) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2] hidden md:block">
         <motion.div
           animate={{ rotate: 360, scale: [1, 1.1, 1] }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-congo-blue/20 blur-[100px]"
+          className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-congo-blue/20 blur-[100px] will-change-transform"
         />
         <motion.div
           animate={{ rotate: -360, scale: [1, 1.2, 1] }}
           transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full bg-congo-red/20 blur-[100px]"
+          className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full bg-congo-red/20 blur-[100px] will-change-transform"
         />
         <motion.div
           animate={{ scale: [1, 1.3, 1], x: [0, 50, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-congo-yellow/10 blur-[120px]"
+          className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-congo-yellow/10 blur-[120px] will-change-transform"
         />
-
-        {/* Floating Particles */}
-        {particles.map((p, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-white/10"
-            style={{
-              width: p.width,
-              height: p.height,
-              top: p.top,
-              left: p.left,
-            }}
-            animate={{
-              y: [0, Math.random() * -100 - 50],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              ease: "linear",
-              delay: p.delay,
-            }}
-          />
-        ))}
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto text-center perspective-1000 -mt-16">
+      {/* Text content */}
+      <div className="relative z-10 max-w-5xl mx-auto text-center -mt-16">
         <motion.p
-          initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ delay: 0.2, duration: 0.8 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
           className="text-congo-yellow font-medium tracking-widest uppercase mb-6 text-sm md:text-base"
         >
           Global Scholar Capstone 2025-2026
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.8, type: "spring" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.6 }}
           className="text-6xl md:text-8xl lg:text-9xl font-black leading-tight tracking-tighter mb-8"
         >
-          The <motion.span
-            animate={{ color: ["#fff", "#0077FF", "#fff"] }}
+          The{" "}
+          <motion.span
+            animate={isMobile ? {} : { color: ["#fff", "#0077FF", "#fff"] }}
             transition={{ duration: 4, repeat: Infinity }}
             className="text-congo-blue"
-          >Rwanda</motion.span>-<motion.span
-            animate={{ color: ["#fff", "#CE1021", "#fff"] }}
+          >
+            Rwanda
+          </motion.span>
+          -{" "}
+          <motion.span
+            animate={isMobile ? {} : { color: ["#fff", "#CE1021", "#fff"] }}
             transition={{ duration: 4, repeat: Infinity, delay: 2 }}
             className="text-congo-red"
-          >Congo</motion.span> Conflict.
+          >
+            Congo
+          </motion.span>{" "}
+          Conflict.
         </motion.h1>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.5 }}
           className="relative inline-block"
         >
           <span className="text-4xl md:text-6xl font-black tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-congo-yellow via-white to-congo-yellow opacity-90 drop-shadow-2xl">
             VOICES FOR CONGO
           </span>
-          <motion.div 
+          <motion.div
             className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-congo-blue to-transparent"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
           />
         </motion.div>
       </div>
@@ -162,7 +151,7 @@ export const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50 z-10"
       >
         <ArrowDown className="animate-bounce" />
       </motion.div>
