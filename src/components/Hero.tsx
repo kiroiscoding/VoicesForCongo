@@ -2,10 +2,9 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
-// Add new photos to public/images/heropagepictures/ and add the path here
 const heroImages = [
   "/images/heropagepictures/photo1.jpg",
   "/images/heropagepictures/congo-rwanda-explainer-new4-zwjv-videoSixteenByNineJumbo1600.jpg",
@@ -17,9 +16,17 @@ const heroImages = [
 export const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
+    const mobile = window.innerWidth < 768;
+    setIsMobile(mobile);
+
+    // Lock height on mobile to prevent Chrome toolbar resize jitter
+    if (mobile && sectionRef.current) {
+      sectionRef.current.style.height = `${window.innerHeight}px`;
+      sectionRef.current.style.minHeight = "unset";
+    }
   }, []);
 
   useEffect(() => {
@@ -30,34 +37,37 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-rich-black text-white px-4 pt-20">
-
-      {/* Crossfading photo slideshow — Ken Burns only on desktop */}
-      <AnimatePresence>
+    <section
+      ref={sectionRef}
+      className="relative min-h-[100svh] w-full flex flex-col items-center justify-center overflow-hidden bg-rich-black text-white px-4 pt-20"
+    >
+      {/* Crossfading slideshow — simple opacity on mobile, Ken Burns on desktop */}
+      <AnimatePresence mode="popLayout">
         <motion.div
           key={currentIndex}
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.38 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.8, ease: "easeInOut" }}
-          className="absolute inset-0 will-change-[opacity]"
+          transition={{ duration: 1.5, ease: "linear" }}
+          className="absolute inset-0"
+          style={{ willChange: "opacity" }}
         >
           {isMobile ? (
-            // On mobile: no Ken Burns zoom, just a plain crossfade
             <Image
               src={heroImages[currentIndex]}
               alt="Democratic Republic of Congo"
               fill
               className="object-cover object-center"
               priority={currentIndex === 0}
+              sizes="100vw"
             />
           ) : (
-            // On desktop: Ken Burns zoom
             <motion.div
-              className="absolute inset-0 will-change-transform"
+              className="absolute inset-0"
               initial={{ scale: 1.06 }}
               animate={{ scale: 1 }}
               transition={{ duration: 7, ease: "easeOut" }}
+              style={{ willChange: "transform" }}
             >
               <Image
                 src={heroImages[currentIndex]}
@@ -65,6 +75,7 @@ export const Hero = () => {
                 fill
                 className="object-cover object-center"
                 priority={currentIndex === 0}
+                sizes="100vw"
               />
             </motion.div>
           )}
@@ -74,22 +85,25 @@ export const Hero = () => {
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/85 pointer-events-none z-[1]" />
 
-      {/* Animated blobs — desktop only (too heavy for mobile) */}
+      {/* Animated blobs — desktop only */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2] hidden md:block">
         <motion.div
           animate={{ rotate: 360, scale: [1, 1.1, 1] }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-congo-blue/20 blur-[100px] will-change-transform"
+          className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-congo-blue/20 blur-[100px]"
+          style={{ willChange: "transform" }}
         />
         <motion.div
           animate={{ rotate: -360, scale: [1, 1.2, 1] }}
           transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full bg-congo-red/20 blur-[100px] will-change-transform"
+          className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full bg-congo-red/20 blur-[100px]"
+          style={{ willChange: "transform" }}
         />
         <motion.div
           animate={{ scale: [1, 1.3, 1], x: [0, 50, 0] }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-congo-yellow/10 blur-[120px] will-change-transform"
+          className="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] rounded-full bg-congo-yellow/10 blur-[120px]"
+          style={{ willChange: "transform" }}
         />
       </div>
 
@@ -111,21 +125,29 @@ export const Hero = () => {
           className="text-6xl md:text-8xl lg:text-9xl font-black leading-tight tracking-tighter mb-8"
         >
           The{" "}
-          <motion.span
-            animate={isMobile ? {} : { color: ["#fff", "#0077FF", "#fff"] }}
-            transition={{ duration: 4, repeat: Infinity }}
-            className="text-congo-blue"
-          >
-            Rwanda
-          </motion.span>
+          {isMobile ? (
+            <span className="text-congo-blue">Rwanda</span>
+          ) : (
+            <motion.span
+              animate={{ color: ["#fff", "#0077FF", "#fff"] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="text-congo-blue"
+            >
+              Rwanda
+            </motion.span>
+          )}
           -{" "}
-          <motion.span
-            animate={isMobile ? {} : { color: ["#fff", "#CE1021", "#fff"] }}
-            transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-            className="text-congo-red"
-          >
-            Congo
-          </motion.span>{" "}
+          {isMobile ? (
+            <span className="text-congo-red">Congo</span>
+          ) : (
+            <motion.span
+              animate={{ color: ["#fff", "#CE1021", "#fff"] }}
+              transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+              className="text-congo-red"
+            >
+              Congo
+            </motion.span>
+          )}{" "}
           Conflict.
         </motion.h1>
 
