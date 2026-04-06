@@ -8,8 +8,9 @@ import { useState } from "react";
 export const MiniPlayer = () => {
   const { currentEpisode, isPlaying, togglePlay, progress, duration, seek, volume, setVolume } = useAudio();
   const [isExpanded, setIsExpanded] = useState(true);
+  const [dismissed, setDismissed] = useState(false);
 
-  if (!currentEpisode) return null;
+  if (!currentEpisode || dismissed) return null;
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -25,7 +26,13 @@ export const MiniPlayer = () => {
         exit={{ y: 100, opacity: 0 }}
         className="fixed bottom-6 right-6 z-50 w-full max-w-sm"
       >
-        <div className="bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="bg-neutral-900/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden relative">
+          <button
+            onClick={() => setDismissed(true)}
+            className="absolute top-2 right-2 z-10 text-white/30 hover:text-white transition-colors"
+          >
+            <X size={14} />
+          </button>
           {/* Progress Bar */}
           <div 
             className="h-1 bg-white/10 w-full cursor-pointer relative group"

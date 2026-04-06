@@ -5,6 +5,7 @@ import { Mic, ScrollText, Play, Radio, Clock, Pause } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAudio } from "@/context/AudioContext";
+import Image from "next/image";
 
 interface Episode {
   id: number;
@@ -20,9 +21,9 @@ const episodes: Episode[] = [
     id: 1,
     title: "Episode 1: The Overview",
     description: "\"The Conflict in Congo\" explores the hidden crisis, the human cost of our technology, and how you can help. Join me as we dive deep into the history, the current reality, and the path forward for the DRC.",
-    duration: "15 min",
+    duration: "7 min",
     transcriptLink: "https://docs.google.com/document/d/1QJpq1iKB1a_9ddrZU48lQu59D6lbOBXyjRG84HKFhD0/edit?tab=t.0",
-    // audioSrc: "/audio/episode1.mp3" // Temporarily disabled
+    audioSrc: "/audio/Abigail 03-31-2026.mp3",
   },
   {
     id: 2,
@@ -77,8 +78,14 @@ export const PodcastSection = () => {
               className="relative"
             >
               <div className="aspect-video lg:aspect-square max-h-[500px] w-full rounded-3xl overflow-hidden relative shadow-2xl border border-white/10 group">
-                <div className="absolute inset-0 bg-gradient-to-br from-congo-red to-deep-purple mix-blend-multiply opacity-80" />
-                <div className="absolute inset-0 bg-black/40" />
+                <Image
+                  src="/images/abbi_PIC.JPG"
+                  alt="Abigail McKoy — Host of Voices for Congo"
+                  fill
+                  className="object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-congo-red/75 to-deep-purple/85" />
+                <div className="absolute inset-0 bg-black/20" />
                 
                 {/* Visualizer Animation (Active only when playing) */}
                 <div className="absolute bottom-0 left-0 right-0 h-1/2 flex items-end justify-center gap-2 p-8 opacity-50">

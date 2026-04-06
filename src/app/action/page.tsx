@@ -11,7 +11,7 @@ export default function ActionPage() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex-grow pt-24 min-h-screen"
+        className="flex-grow min-h-screen"
       >
         <ActionSection />
       </motion.div>

@@ -1,10 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+
+// Add new photos to public/images/heropagepictures/ and add the path here
+const heroImages = [
+  "/images/heropagepictures/photo1.jpg",
+  "/images/heropagepictures/congo-rwanda-explainer-new4-zwjv-videoSixteenByNineJumbo1600.jpg",
+  "/images/heropagepictures/SafricaRDC-scaled.jpg",
+  "/images/heropagepictures/congo-un-peacekeeping-GettyImages-2153762977.webp",
+  "/images/heropagepictures/GettyImages-2196675167.webp",
+];
 
 export const Hero = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [particles, setParticles] = useState<{ width: number; height: number; top: string; left: string; duration: number; delay: number }[]>([]);
 
   useEffect(() => {
@@ -19,10 +30,48 @@ export const Hero = () => {
     setParticles(newParticles);
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % heroImages.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-rich-black text-white px-4 pt-20">
+      {/* Crossfading photo slideshow with Ken Burns zoom */}
+      <AnimatePresence>
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.38 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.8, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          <motion.div
+            className="absolute inset-0"
+            initial={{ scale: 1.08 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 7, ease: "easeOut" }}
+          >
+            <Image
+              src={heroImages[currentIndex]}
+              alt="Democratic Republic of Congo"
+              fill
+              className="object-cover object-center"
+              priority={currentIndex === 0}
+            />
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Dark gradient overlay so text pops */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/85 pointer-events-none z-[1]" />
+
+
       {/* Abstract Background Shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2]">
         <motion.div
           animate={{ rotate: 360, scale: [1, 1.1, 1] }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
@@ -64,7 +113,7 @@ export const Hero = () => {
         ))}
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto text-center perspective-1000 mt-10">
+      <div className="relative z-10 max-w-5xl mx-auto text-center perspective-1000 -mt-16">
         <motion.p
           initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 // Stat Component from original ContextSection
 const Stat = ({ label, value, color, delay }: { label: string, value: string, color: string, delay: number }) => (
@@ -57,9 +58,10 @@ export const ContextSection = () => {
   return (
     <div className="flex flex-col">
       {/* 1. Context Overview */}
-      <section className="min-h-[80vh] flex items-center justify-center bg-rich-black text-white relative py-24">
+      <section className="flex flex-col bg-rich-black text-white relative py-24">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            {/* Left: text + stats */}
             <div>
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -91,7 +93,7 @@ export const ContextSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4, duration: 0.6 }}
-                className="p-6 border-l-4 border-congo-yellow bg-white/5 rounded-r-xl"
+                className="p-6 border-l-4 border-congo-yellow bg-white/5 rounded-r-xl mb-8"
               >
                 <p className="text-xl text-white/90 italic">
                   The most affected? <span className="text-congo-yellow font-bold">Women and children.</span>
@@ -99,14 +101,35 @@ export const ContextSection = () => {
                   Mass killings, enforced disappearances, and sexual violence have become weapons of war.
                 </p>
               </motion.div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Stat label="Active Armed Groups" value="100+" color="text-congo-red" delay={0.2} />
+                <Stat label="Refugees Displaced" value="7M+" color="text-congo-blue" delay={0.3} />
+                <Stat label="Key Resource" value="Cobalt" color="text-vibrant-teal" delay={0.4} />
+                <Stat label="Primary Victims" value="Civilians" color="text-congo-yellow" delay={0.5} />
+              </div>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Stat label="Active Armed Groups" value="100+" color="text-congo-red" delay={0.2} />
-              <Stat label="Refugees Displaced" value="7M+" color="text-congo-blue" delay={0.3} />
-              <Stat label="Key Resource" value="Cobalt" color="text-vibrant-teal" delay={0.4} />
-              <Stat label="Primary Victims" value="Civilians" color="text-congo-yellow" delay={0.5} />
-            </div>
+
+            {/* Right: photo at natural portrait ratio */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+              style={{ aspectRatio: "3/4" }}
+            >
+              <Image
+                src="/images/context.jpeg"
+                alt="A young Congolese child sits among the belongings of displaced families"
+                fill
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <p className="absolute bottom-5 left-5 right-5 text-white/70 text-xs uppercase tracking-widest font-medium">
+                A displaced child in Eastern DRC
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -182,13 +205,35 @@ export const ContextSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
             <span className="text-congo-blue font-bold tracking-widest uppercase text-sm">Step 3: Investigate</span>
             <h2 className="text-4xl md:text-6xl font-bold mt-4 mb-6">Expert Insights</h2>
             <p className="text-white/60 max-w-2xl mx-auto text-lg">
               Research driven by interviews with cultural experts, activists, and humanitarian organizations.
             </p>
+          </motion.div>
+
+          {/* Photo strip between heading and cards */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="relative w-full h-64 rounded-3xl overflow-hidden mb-12 border border-white/10"
+          >
+            <Image
+              src="/images/303201-1468x710.jpg"
+              alt="Congolese civilians displaced by conflict"
+              fill
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/80" />
+            <div className="absolute inset-0 flex items-center justify-center text-center px-8">
+              <p className="text-white/80 text-lg md:text-2xl font-medium italic max-w-3xl">
+                "The world must not look away from what is happening in the Congo."
+              </p>
+            </div>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

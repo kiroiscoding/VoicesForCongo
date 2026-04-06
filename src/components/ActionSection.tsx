@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, ScrollText, HeartHandshake, ExternalLink, X, Copy, Check } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const ActionCard = ({ icon: Icon, title, desc, links, color, index, onAction }: any) => (
@@ -105,25 +106,54 @@ export const ActionSection = () => {
   };
 
   return (
-    <section className="min-h-[80vh] py-12 bg-rich-black relative flex flex-col justify-center">
+    <section className="min-h-[80vh] pb-12 bg-rich-black relative flex flex-col justify-center overflow-hidden">
       <AnimatePresence>
         {showLetter && <LetterTemplate onClose={() => setShowLetter(false)} />}
       </AnimatePresence>
 
-      <div className="container mx-auto px-4 max-w-6xl">
-        
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-center mb-16"
-        >
-          <span className="text-congo-blue font-bold tracking-widest uppercase text-sm">Step 5: Implementation</span>
-          <h2 className="text-4xl md:text-6xl font-bold text-white mt-4 mb-6">Take Action</h2>
-          <p className="text-white/60 max-w-2xl mx-auto text-lg">
+      {/* Full-width photo banner at the top */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative w-full h-80 md:h-[28rem] mb-16 overflow-hidden"
+      >
+        <Image
+          src="/images/Donate.avif"
+          alt="Congolese children displaced by conflict"
+          fill
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-rich-black/60 via-black/40 to-rich-black" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pt-24">
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-congo-blue font-bold tracking-widest uppercase text-sm mb-4"
+          >
+            Step 5: Implementation
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-4xl md:text-6xl font-bold text-white mb-4"
+          >
+            Take Action
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="text-white/70 max-w-2xl text-lg"
+          >
             Awareness is the first step. Action is the second. Here is how you can help.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
+      </motion.div>
+
+      <div className="container mx-auto px-4 max-w-6xl">
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <ActionCard 
